@@ -21,12 +21,12 @@ public class Main {
             matrix[a][b] = c;
             matrix[b][a] = c; //Technically unnessecary but makes it cleaner
         }
-        printMatrix(matrix);
+        //printMatrix(matrix);
         prices = new ArrayList<>(); //This could be an array
         prim(matrix);
-        System.out.println("Unsorted prices: " + prices);
+        //System.out.println("Unsorted prices: " + prices);
         Collections.sort(prices);
-        System.out.println("Sorted prices: " + prices);
+        //System.out.println("Sorted prices: " + prices);
         int totalPrice = 0;
         for(int i = 0; i < numberOfIslands-numberOfFerries-1;i++){
             totalPrice += prices.get(i);
@@ -70,7 +70,7 @@ public class Main {
                 visited[val2] = true;
             }
         }
-        System.out.println("Total pris uden færger: " + totalCost);
+        //System.out.println("Total pris uden færger: " + totalCost);
     }
 
 
