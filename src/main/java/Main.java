@@ -32,27 +32,26 @@ public class Main {
         BitSet visitedIslands = new BitSet(numberOfIslands);
         int e = 0;
         int i = 0;
+        ArrayList<Edge> possibleedges = new ArrayList<>();
+        possibleedges.addAll(islands[1]);//Adds all edges from the 0´th island, making it our starting point
         while (e < numberOfIslands - 1){
-            ArrayList<Edge> possibleedges = new ArrayList<>();
-            possibleedges.addAll(islands[i]);
-            Edge cheapestEdge = Collections.min(possibleedges);
-            if (!visitedIslands.get(cheapestEdge.dest)){ //Add thingy in case it has been visited
-                possibleedges.add(edges[cheapestEdge.dest]);
-                visitedIslands.set(cheapestEdge.dest);
+            Edge cheapestEdge = Collections.min(possibleedges); //Find the cheapest route from known islands
+            possibleedges.remove(cheapestEdge); //Removes it so it won't be checked in the future
+            if (!visitedIslands.get(cheapestEdge.dest)){ //If cheapest route endpoint hasnt been visited //TODO: Add thingy in case it has been visited
+                MSTedges.add(cheapestEdge); //Not sure if this is needed
+                possibleedges.addAll(islands[cheapestEdge.dest]); //Adds all routes from the destination of the cheapest edge
+                visitedIslands.set(cheapestEdge.dest); //Sets cheapest route as visited
+                prices.add(cheapestEdge.weight); //Adds the price, for keeping tally
                 e++;
             }
-
-
-
-            if (!visitedIslands.get(i)){
-                prices.add(edges[i].weight);
-                 e += 1;
-                visitedIslands.set(i);
-            }
         }
+        int totalPrice = 0;
         for(int b : prices){
-            System.out.println(b);
+            totalPrice += b;
         }
+        System.out.println(totalPrice);
+
+
     }
 
     public static boolean isGood(int i, int j){
