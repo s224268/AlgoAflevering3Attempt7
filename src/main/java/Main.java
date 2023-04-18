@@ -1,5 +1,4 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     static int numberOfIslands;
@@ -11,28 +10,56 @@ public class Main {
         numberOfIslands = scanner.nextInt();
         int maxBridges = scanner.nextInt();
         numberOfFerries = scanner.nextInt();
-        int[][] matrix = new int[numberOfIslands+1][numberOfIslands+1];
+        Edge[] edges = new Edge[maxBridges + numberOfFerries - 1];
+        ArrayList<Edge>[] islands = new ArrayList[numberOfIslands + 1];
+
+        for(int i = 0; i <= numberOfIslands;i++){
+            islands[i] = new ArrayList<Edge>();
+        }
 
         for (int i = 0; i < maxBridges; i++){
             int a = scanner.nextInt();
             int b = scanner.nextInt();
             int c = scanner.nextInt();
-            matrix[a][b] = c;
+            edges[i] = new Edge(a,b,c); //Makes the edge and adds it to the array
+            islands[a].add(edges[i]); //adds the newly made edge to its' owner island
         }
-        priser = new int[numberOfIslands - 1];
-        prim(matrix);
-        Arrays.sort(priser);
-        int totalPris = 0;
-        for(int i = 0; i < numberOfIslands-numberOfFerries-1;i++){
-            totalPris += priser[i];
+        Arrays.parallelSort(edges);
+        ArrayList<Integer> prices = new ArrayList<>();
+        ArrayList<Edge> MSTedges = new ArrayList<>();
+
+
+        BitSet visitedIslands = new BitSet(numberOfIslands);
+        int e = 0;
+        int i = 0;
+        while (e < numberOfIslands - 1){
+            ArrayList<Edge> possibleedges = new ArrayList<>();
+            possibleedges.addAll(islands[i]);
+            Edge cheapestEdge = Collections.min(possibleedges);
+            if (!visitedIslands.get(cheapestEdge.dest)){ //Add thingy in case it has been visited
+                possibleedges.add(edges[cheapestEdge.dest]);
+                visitedIslands.set(cheapestEdge.dest);
+                e++;
+            }
+
+
+
+            if (!visitedIslands.get(i)){
+                prices.add(edges[i].weight);
+                 e += 1;
+                visitedIslands.set(i);
+            }
         }
-        System.out.println(totalPris);
+        for(int b : prices){
+            System.out.println(b);
+        }
     }
 
     public static boolean isGood(int i, int j){
         if (!visited[i] && !visited[j]) return false;
         return !visited[i] || !visited[j]; //intellij wants to do magic
     }
+
 
     public static void prim(int[][] matrix){
         visited = new boolean[numberOfIslands + 1];
@@ -42,12 +69,12 @@ public class Main {
             int val1 = -1; int val2 = -1; int minPrice = Integer.MAX_VALUE; //Maybe make this higher
             for (int i = 1; i <= numberOfIslands; i++){
                 for (int j = 1; j <= numberOfIslands; j++){
-                    int potPrice = matrix[i][j];
+                    int potPrice = matrix[j][i];
                     if (potPrice < minPrice && potPrice != 0){
-                        if (isGood(i,j)){
+                        if (isGood(j,i)){
                             minPrice = potPrice;
-                            val1 = i;
-                            val2 = j;
+                            val1 = j;
+                            val2 = i;
                             if (minPrice == 1) break;
                         }
                     }
@@ -60,5 +87,23 @@ public class Main {
                 visited[val2] = true;
             }
         }
+    }
+
+    public static void prim2(int[][] matrix){
+
+    }
+
+}
+
+class Edge implements Comparable<Edge> {
+    int src, dest, weight;
+    public Edge(int src, int dest, int weight) {
+        this.src = src;
+        this.dest = dest;
+        this.weight = weight;
+    }
+    @Override
+    public int compareTo(Edge o) {
+        return this.weight - o.weight;
     }
 }
