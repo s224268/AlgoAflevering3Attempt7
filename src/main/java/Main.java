@@ -46,7 +46,6 @@ public class Main {
 
 
         visited[1] = true;
-        int totalCost = 0;
         int goodEdges = 0;
         while (goodEdges < numberOfIslands - 1){
             int val1 = -1; int val2 = -1; int minPrice = 200001; //Maybe make this higher
@@ -57,14 +56,13 @@ public class Main {
                             minPrice = matrix[i][j]; //Should decrease step by step
                             val1 = i;
                             val2 = j;
-                            if (minPrice == 1) break;
+                            //if (minPrice == 1) break;
                         }
                     }
                 }
             }
             if (val1 > 0 && val2 > 0){
                 goodEdges++;
-                totalCost += minPrice;
                 prices.add(minPrice);
                 visited[val1] = true;
                 visited[val2] = true;
