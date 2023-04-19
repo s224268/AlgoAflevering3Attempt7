@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -6,18 +9,24 @@ public class Main {
     static boolean[] visited;
     static int[] priser;
     static int numberOfFerries;
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        numberOfIslands = scanner.nextInt();
-        int maxBridges = scanner.nextInt();
-        numberOfFerries = scanner.nextInt();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String lineOne = reader.readLine();
+        String[] partsOne = lineOne.split(" ");
+        numberOfIslands = Integer.parseInt(partsOne[0]);
+        int maxBridges = Integer.parseInt(partsOne[1]);
+        numberOfFerries = Integer.parseInt(partsOne[2]);
+
         int[][] matrix = new int[numberOfIslands+1][numberOfIslands+1];
 
 
         for (int i = 0; i < maxBridges; i++){
-            int a = scanner.nextInt();
-            int b = scanner.nextInt();
-            int c = scanner.nextInt();
+            String line = reader.readLine();
+            String[] parts = line.split(" ");
+            int a = Integer.parseInt(parts[0]);
+            int b = Integer.parseInt(parts[1]);
+            int c = Integer.parseInt(parts[2]);
             matrix[a][b] = c;
         }
         priser = new int[numberOfIslands - 1];
