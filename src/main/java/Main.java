@@ -13,6 +13,7 @@ public class Main {
         numberOfFerries = scanner.nextInt();
         int[][] matrix = new int[numberOfIslands+1][numberOfIslands+1];
 
+
         for (int i = 0; i < maxBridges; i++){
             int a = scanner.nextInt();
             int b = scanner.nextInt();
@@ -20,8 +21,10 @@ public class Main {
             matrix[a][b] = c;
         }
         priser = new int[numberOfIslands - 1];
+        System.out.println("dead");
         prim(matrix);
         Arrays.sort(priser);
+        System.out.println("dead");
         int totalPris = 0;
         for(int i = 0; i < numberOfIslands-numberOfFerries-1;i++){
             totalPris += priser[i];
