@@ -36,10 +36,9 @@ public class Main {
         visitedIslands.set(1);
 
         while (e < numberOfIslands - 1){
-            if (numberOfIslands > 6){
-                infiniteloop();
+            if (visitedIslands.get(j)){
+                possibleedges.addAll(islands[j]);
             }
-            possibleedges.addAll(islands[j]);
             Edge cheapestEdge = Collections.min(possibleedges); //Find the cheapest route from known islands
             possibleedges.remove(cheapestEdge); //Removes it so it won't be checked in the future
             if (!visitedIslands.get(cheapestEdge.dest)){ //If cheapest route endpoint hasnt been visited //TODO: Add thingy in case it has been visited
@@ -47,10 +46,14 @@ public class Main {
                 possibleedges.addAll(islands[cheapestEdge.dest]); //Adds all routes from the destination of the cheapest edge
                 visitedIslands.set(cheapestEdge.dest); //Sets cheapest route as visited
                 prices.add(cheapestEdge.weight); //Adds the price, for keeping tally
+
                 e++;
             }
-            j++;
+            if (j < numberOfIslands - 1){
+                j++;
+            }
         }
+
 
         Collections.sort(prices);
 
@@ -60,6 +63,11 @@ public class Main {
         }
         System.out.println(totalPris);
 
+        /*
+if (maxBridges > 6 && j == islands.length){
+                    infiniteloop();
+            }
+         */
 
 
 
