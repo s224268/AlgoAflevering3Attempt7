@@ -21,10 +21,10 @@ public class Main {
             matrix[a][b] = c;
         }
         priser = new int[numberOfIslands - 1];
-        System.out.println("dead");
         prim(matrix);
+
         Arrays.sort(priser);
-        System.out.println("dead");
+
         int totalPris = 0;
         for(int i = 0; i < numberOfIslands-numberOfFerries-1;i++){
             totalPris += priser[i];
@@ -46,7 +46,10 @@ public class Main {
             for (int i = 1; i <= numberOfIslands; i++){
                 for (int j = 1; j <= numberOfIslands; j++){
                     int potPrice = matrix[i][j];
-                    if (potPrice < minPrice && potPrice != 0){
+                    if (potPrice == 0){
+                        continue;
+                    }
+                    if (potPrice < minPrice){
                         if (isGood(i,j)){
                             minPrice = potPrice;
                             val1 = i;
