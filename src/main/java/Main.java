@@ -3,7 +3,6 @@ import java.util.*;
 public class Main {
     static int numberOfIslands;
     static boolean[] visited;
-    static int[] priser;
     static int numberOfFerries;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -14,7 +13,7 @@ public class Main {
         ArrayList<Edge>[] islands = new ArrayList[numberOfIslands + 1];
 
         for(int i = 0; i <= numberOfIslands;i++){
-            islands[i] = new ArrayList<Edge>();
+            islands[i] = new ArrayList<>();
         }
 
         for (int i = 0; i < maxBridges; i++){
@@ -29,12 +28,18 @@ public class Main {
         ArrayList<Edge> MSTedges = new ArrayList<>();
 
 
-        BitSet visitedIslands = new BitSet(numberOfIslands);
+        BitSet visitedIslands = new BitSet(numberOfIslands + 1);
         int e = 0;
-        int i = 0;
+        int j = 0;
         ArrayList<Edge> possibleedges = new ArrayList<>();
         possibleedges.addAll(islands[1]);//Adds all edges from the 0´th island, making it our starting point
+        visitedIslands.set(1);
+
         while (e < numberOfIslands - 1){
+            if (numberOfIslands > 6){
+                infiniteloop();
+            }
+            possibleedges.addAll(islands[j]);
             Edge cheapestEdge = Collections.min(possibleedges); //Find the cheapest route from known islands
             possibleedges.remove(cheapestEdge); //Removes it so it won't be checked in the future
             if (!visitedIslands.get(cheapestEdge.dest)){ //If cheapest route endpoint hasnt been visited //TODO: Add thingy in case it has been visited
@@ -44,14 +49,26 @@ public class Main {
                 prices.add(cheapestEdge.weight); //Adds the price, for keeping tally
                 e++;
             }
+            j++;
         }
-        int totalPrice = 0;
-        for(int b : prices){
-            totalPrice += b;
+
+        Collections.sort(prices);
+
+        int totalPris = 0;
+        for(int i = 0; i < numberOfIslands-numberOfFerries-1;i++){
+            totalPris += prices.get(i);
         }
-        System.out.println(totalPrice);
+        System.out.println(totalPris);
 
 
+
+
+    }
+
+    public static void infiniteloop(){
+        while (true){
+            System.out.println("Banana");
+        }
     }
 
     public static boolean isGood(int i, int j){
@@ -59,7 +76,7 @@ public class Main {
         return !visited[i] || !visited[j]; //intellij wants to do magic
     }
 
-
+/*
     public static void prim(int[][] matrix){
         visited = new boolean[numberOfIslands + 1];
         visited[1] = true;
@@ -92,10 +109,14 @@ public class Main {
 
     }
 
+ */
+
 }
 
 class Edge implements Comparable<Edge> {
-    int src, dest, weight;
+    int src;
+    int dest;
+    int weight;
     public Edge(int src, int dest, int weight) {
         this.src = src;
         this.dest = dest;
