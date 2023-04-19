@@ -30,33 +30,33 @@ public class Main {
             islands[a].add(e);
             islands[b].add(e);
         }
-        int[] prizes = new int[numberOfIslands - 1];
+        int[] prices = new int[numberOfIslands - 1];
 
-        BitSet visitedIslands = new BitSet(numberOfIslands + 1);
+        BitSet visitedIslands = new BitSet(numberOfIslands + 1); //keeps track of visited islands
+        visitedIslands.set(1); //We visit island 1
+        PriorityQueue<Edge> queue = new PriorityQueue<>(); //All the good edges
+        queue.addAll(islands[1]); //Adds the inital edges from the first island
+
         int e = 0;
-        visitedIslands.set(1);
-        PriorityQueue<Edge> queue = new PriorityQueue<>();
-        queue.addAll(islands[1]);
-
         while (e < numberOfIslands - 1){
             Edge cheapestEdge = queue.poll();
             if (!visitedIslands.get(cheapestEdge.start)){ //If cheapest route endpoint hasnt been visited
                 queue.addAll(islands[cheapestEdge.start]); //Adds all routes from the destination of the cheapest edge
                 visitedIslands.set(cheapestEdge.start); //Sets cheapest route as visited
-                prizes[e] = cheapestEdge.cost;
+                prices[e] = cheapestEdge.cost;
                 e++;
             }
             if (!visitedIslands.get(cheapestEdge.destination)){ //If cheapest route endpoint hasnt been visited
                 queue.addAll(islands[cheapestEdge.destination]); //Adds all routes from the destination of the cheapest edge
                 visitedIslands.set(cheapestEdge.destination); //Sets cheapest route as visited
-                prizes[e] = cheapestEdge.cost;
+                prices[e] = cheapestEdge.cost;
                 e++;
             }
         }
-        Arrays.parallelSort(prizes);
+        Arrays.parallelSort(prices);
         int totalPris = 0;
         for(int i = 0; i < numberOfIslands-numberOfFerries-1;i++){
-            totalPris += prizes[i];
+            totalPris += prices[i];
         }
         System.out.println(totalPris);
     }
